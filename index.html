@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Lista de Tarefas</title>
+
+  <style>
+
+    body {
+
+      font-family: Arial, sans-serif;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: flex-start;
+
+      height: 100vh;
+
+      margin: 0;
+
+      background-color: #331F19;
+
+      padding: 20px;
+
+    }
+
+
+
+    .container {
+
+      text-align: center;
+
+      background-color: #CBBBA7;
+
+      padding: 20px;
+
+      border-radius: 8px;
+
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+      width: 90%;
+
+      max-width: 700px;
+
+      border: 2px solid #8B7D70;
+
+    }
+
+
+
+    h1 { color: #331F19; }
+
+    p { color: #331F19; font-size: 1.1em; }
+
+
+
+    button {
+
+      background-color: #60041A;
+
+      color: #F4F0EA;
+
+      padding: 10px 20px;
+
+      border: none;
+
+      border-radius: 5px;
+
+      cursor: pointer;
+
+      font-size: 1em;
+
+      transition: background-color 0.3s ease;
+
+      margin-top: 10px;
+
+    }
+
+    button:hover { background-color: #A34743; }
+
+
+
+    ul {
+
+      list-style: none;
+
+      padding: 0;
+
+      margin-top: 20px;
+
+    }
+
+
+
+    li {
+
+      background-color: #F4F0EA;
+
+      color: #331F19;
+
+      padding: 10px;
+
+      margin: 5px 0;
+
+      border-radius: 5px;
+
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 10px;
+
+    }
+
+
+
+    .thumb {
+
+      width: 40px;
+
+      height: 40px;
+
+      border-radius: 5px;
+
+      object-fit: cover;
+
+      border: 1px solid #8B7D70;
+
+    }
+
+
+
+    input[type="text"] {
+
+      padding: 10px;
+
+      width: 80%;
+
+      max-width: 500px;
+
+      margin-top: 10px;
+
+      margin-bottom: 10px;
+
+      border: 2px solid #8B7D70;
+
+      border-radius: 5px;
+
+      font-size: 1em;
+
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      outline: none;
+
+      transition: border-color 0.3s ease;
+
+    }
+
+
+
+    input[type="text"]:focus {
+
+      border-color: #60041A;
+
+      box-shadow: inset 0 2px 4px rgba(96, 4, 26, 0.3);
+
+    }
+
+
+
+    .success {
+
+      color: #2ecc71;
+
+      font-weight: bold;
+
+      margin-top: 5px;
+
+    }
+
+    .error {
+
+      color: #c0392b;
+
+      font-weight: bold;
+
+      margin-top: 5px;
+
+    }
+
+
+
+    .controls button {
+
+      background-color: #60041A;
+
+      color: #F4F0EA;
+
+      border: none;
+
+      border-radius: 5px;
+
+      padding: 6px 10px;
+
+      cursor: pointer;
+
+    }
+
+    .controls button:hover {
+
+      background-color: #A34743;
+
+    }
+
+
+
+    .input-error { border-color: #c0392b !important; }
+
+    .input-success { border-color: #2ecc71 !important; }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>Lista de Tarefas</h1>
+
+    <p>Adicione suas tarefas!</p>
+
+
+
+    <div>
+
+      <input type="text" id="inputTarefa" placeholder="Digite a sua tarefa (mín. 5 caracteres)" />
+
+      <input type="file" id="inputImagem" accept="image/png, image/jpeg" />
+
+      <button id="btnAdicionar">Adicionar</button>
+
+    </div>
+
+
+
+    <p id="mensagem" aria-live="polite"></p>
+
+
+
+    <ul id="listaTarefas"></ul>
+
+  </div>
+
+
+
+  <script>
+
+    const input = document.getElementById('inputTarefa');
+
+    const fileInput = document.getElementById('inputImagem');
+
+    const btnAdicionar = document.getElementById('btnAdicionar');
+
+    const mensagem = document.getElementById('mensagem');
+
+    const lista = document.getElementById('listaTarefas');
+
+    const MIN_CHARS = 5;
+
+    let itens = [];
+
+
+
+    function mostrarMensagem(texto, tipo) {
+
+      mensagem.textContent = texto;
+
+      mensagem.className = tipo;
+
+      input.classList.remove('input-error','input-success');
+
+      if (tipo === 'success') input.classList.add('input-success');
+
+      else if (tipo === 'error') input.classList.add('input-error');
+
+      setTimeout(() => {
+
+        mensagem.textContent = '';
+
+        mensagem.className = '';
+
+        input.classList.remove('input-error','input-success');
+
+      }, 2500);
+
+    }
+
+
+
+    function gerarId() {
+
+      return Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+
+    }
+
+
+
+    btnAdicionar.addEventListener('click', adicionarTarefa);
+
+    input.addEventListener('keypress', e => { if (e.key === 'Enter') adicionarTarefa(); });
+
+
+
+    function adicionarTarefa() {
+
+      const texto = input.value.trim();
+
+      if (texto.length < MIN_CHARS) {
+
+        mostrarMensagem(`Erro: digite ao menos ${MIN_CHARS} caracteres.`, 'error');
+
+        return;
+
+      }
+
+
+
+      const file = fileInput.files && fileInput.files[0];
+
+      if (file) {
+
+        const reader = new FileReader();
+
+        reader.onload = () => pushItem(texto, reader.result);
+
+        reader.readAsDataURL(file);
+
+      } else pushItem(texto, null);
+
+    }
+
+
+
+    function pushItem(texto, img) {
+
+      itens.push({id: gerarId(), texto, img});
+
+      renderLista();
+
+      input.value = '';
+
+      fileInput.value = '';
+
+      mostrarMensagem('Tarefa adicionada com sucesso!', 'success');
+
+    }
+
+
+
+    function renderLista() {
+
+      lista.innerHTML = '';
+
+      itens.forEach((item, idx) => {
+
+        const li = document.createElement('li');
+
+        li.draggable = true;
+
+        li.dataset.id = item.id;
+
+
+
+        const thumb = document.createElement('img');
+
+        thumb.className = 'thumb';
+
+        thumb.src = item.img || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%23eee"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="8" fill="%23888">PNG</text></svg>';
+
+
+
+        const textoEl = document.createElement('span');
+
+        textoEl.textContent = item.texto;
+
+
+
+        const controls = document.createElement('div');
+
+        controls.className = 'controls';
+
+
+
+        const btnEditar = document.createElement('button');
+
+        btnEditar.textContent = 'Editar';
+
+        btnEditar.onclick = () => toggleEditar(item.id, textoEl, btnEditar);
+
+
+
+        const btnExcluir = document.createElement('button');
+
+        btnExcluir.textContent = 'Excluir';
+
+        btnExcluir.onclick = () => {
+
+          if (confirm('Excluir esta tarefa?')) {
+
+            itens = itens.filter(i => i.id !== item.id);
+
+            renderLista();
+
+            mostrarMensagem('Item excluído.', 'success');
+
+          }
+
+        };
+
+
+
+        const btnUp = document.createElement('button');
+
+        btnUp.textContent = '↑';
+
+        btnUp.onclick = () => { if (idx > 0) { [itens[idx-1], itens[idx]] = [itens[idx], itens[idx-1]]; renderLista(); } };
+
+
+
+        const btnDown = document.createElement('button');
+
+        btnDown.textContent = '↓';
+
+        btnDown.onclick = () => { if (idx < itens.length - 1) { [itens[idx+1], itens[idx]] = [itens[idx], itens[idx+1]]; renderLista(); } };
+
+
+
+        const btnImg = document.createElement('button');
+
+        btnImg.textContent = 'Alterar Imagem';
+
+        btnImg.onclick = () => {
+
+          const inputAlt = document.createElement('input');
+
+          inputAlt.type = 'file';
+
+          inputAlt.accept = 'image/png,image/jpeg';
+
+          inputAlt.onchange = () => {
+
+            const f = inputAlt.files[0];
+
+            if (f) {
+
+              const r = new FileReader();
+
+              r.onload = () => {
+
+                item.img = r.result;
+
+                renderLista();
+
+                mostrarMensagem('Imagem atualizada.', 'success');
+
+              };
+
+              r.readAsDataURL(f);
+
+            }
+
+          };
+
+          inputAlt.click();
+
+        };
+
+
+
+        controls.append(btnEditar, btnExcluir, btnUp, btnDown, btnImg);
+
+        li.append(thumb, textoEl, controls);
+
+        lista.append(li);
+
+      });
+
+    }
+
+
+
+    function toggleEditar(id, textoEl, btnEditar) {
+
+      const item = itens.find(i => i.id === id);
+
+      if (!item) return;
+
+
+
+      if (btnEditar.dataset.editing === 'true') {
+
+        const novoTexto = textoEl.querySelector('input').value.trim();
+
+        if (novoTexto.length < MIN_CHARS) {
+
+          mostrarMensagem(`Erro: digite ao menos ${MIN_CHARS} caracteres.`, 'error');
+
+          return;
+
+        }
+
+        item.texto = novoTexto;
+
+        btnEditar.textContent = 'Editar';
+
+        btnEditar.dataset.editing = 'false';
+
+        renderLista();
+
+        mostrarMensagem('Alteração salva.', 'success');
+
+      } else {
+
+        btnEditar.dataset.editing = 'true';
+
+        btnEditar.textContent = 'Salvar';
+
+        const inputEd = document.createElement('input');
+
+        inputEd.type = 'text';
+
+        inputEd.value = item.texto;
+
+        textoEl.innerHTML = '';
+
+        textoEl.append(inputEd);
+
+        inputEd.focus();
+
+      }
+
+    }
+
+  </script>
+
+</body>
+
+</html>
