@@ -1,379 +1,561 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lista de Tarefas com API</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      margin: 0;
-      background-color: #1F2A38; /* Azul Escuro */
-      padding: 20px;
-    }
 
-    .container {
-      text-align: center;
-      background-color: #E6E9EE; /* Cinza Claro */
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      width: 90%;
-      max-width: 800px;
-      border: 1px solid #C0C8D0;
-    }
+  <meta charset="UTF-8" />
 
-    h1 { color: #2C3E50; margin-bottom: 5px; }
-    p { color: #5B6D7D; font-size: 1.1em; margin-bottom: 20px; }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    button {
-      background-color: #3498DB; /* Azul Claro */
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1em;
-      transition: background-color 0.3s ease;
-      margin-left: 10px;
-    }
-    button:hover { background-color: #2980B9; }
+  <title>Lista de Tarefas</title>
 
-    .add-section {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 20px;
-    }
+  <style>
 
-    ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 20px;
-    }
+    body {
 
-    li {
-      background-color: #F8F9FA;
-      color: #2C3E50;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: background-color 0.3s ease;
-    }
+      font-family: Arial, sans-serif;
 
-    .completed {
-      background-color: #D4EDDA; /* Verde Suave */
-      color: #155724;
-      text-decoration: line-through;
-      opacity: 0.7;
-    }
+      display: flex;
 
-    .task-text {
-      flex-grow: 1;
-      text-align: left;
-      padding: 0 10px;
-    }
-    .task-text input[type="text"] {
-      width: 90%;
-      padding: 5px;
-      border: 1px solid #BDC3C7;
-      border-radius: 4px;
-      font-size: 1em;
-    }
+      justify-content: center;
 
-    input[type="text"] {
-      padding: 10px;
-      width: 60%;
-      max-width: 500px;
-      border: 2px solid #BDC3C7;
-      border-radius: 5px;
-      font-size: 1em;
-      outline: none;
-      transition: border-color 0.3s ease;
-    }
-    input[type="text"]:focus {
-      border-color: #3498DB;
-    }
+      align-items: flex-start;
 
-    .controls button {
-      background-color: #E74C3C; /* Vermelho */
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 8px 12px;
-      margin-left: 5px;
-    }
-    .controls .edit-btn { background-color: #F39C12; } /* Laranja */
-    .controls .save-btn { background-color: #27AE60; } /* Verde Escuro */
-    .controls button:hover { opacity: 0.8; }
+      height: 100vh;
 
-    #mensagem {
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 5px;
-      font-weight: bold;
-      display: none;
-    }
-    .success { background-color: #D4EDDA; color: #155724; display: block;}
-    .error { background-color: #F8D7DA; color: #721C24; display: block;}
-    .loading { color: #3498DB; display: block; }
-  </style>
+      margin: 0;
+
+      background-color: #331F19;
+
+      padding: 20px;
+
+    }
+
+
+
+    .container {
+
+      text-align: center;
+
+      background-color: #CBBBA7;
+
+      padding: 20px;
+
+      border-radius: 8px;
+
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+      width: 90%;
+
+      max-width: 700px;
+
+      border: 2px solid #8B7D70;
+
+    }
+
+
+
+    h1 { color: #331F19; }
+
+    p { color: #331F19; font-size: 1.1em; }
+
+
+
+    button {
+
+      background-color: #60041A;
+
+      color: #F4F0EA;
+
+      padding: 10px 20px;
+
+      border: none;
+
+      border-radius: 5px;
+
+      cursor: pointer;
+
+      font-size: 1em;
+
+      transition: background-color 0.3s ease;
+
+      margin-top: 10px;
+
+    }
+
+    button:hover { background-color: #A34743; }
+
+
+
+    ul {
+
+      list-style: none;
+
+      padding: 0;
+
+      margin-top: 20px;
+
+    }
+
+
+
+    li {
+
+      background-color: #F4F0EA;
+
+      color: #331F19;
+
+      padding: 10px;
+
+      margin: 5px 0;
+
+      border-radius: 5px;
+
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 10px;
+
+    }
+
+
+
+    .thumb {
+
+      width: 40px;
+
+      height: 40px;
+
+      border-radius: 5px;
+
+      object-fit: cover;
+
+      border: 1px solid #8B7D70;
+
+    }
+
+
+
+    input[type="text"] {
+
+      padding: 10px;
+
+      width: 80%;
+
+      max-width: 500px;
+
+      margin-top: 10px;
+
+      margin-bottom: 10px;
+
+      border: 2px solid #8B7D70;
+
+      border-radius: 5px;
+
+      font-size: 1em;
+
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      outline: none;
+
+      transition: border-color 0.3s ease;
+
+    }
+
+
+
+    input[type="text"]:focus {
+
+      border-color: #60041A;
+
+      box-shadow: inset 0 2px 4px rgba(96, 4, 26, 0.3);
+
+    }
+
+
+
+    .success {
+
+      color: #2ecc71;
+
+      font-weight: bold;
+
+      margin-top: 5px;
+
+    }
+
+    .error {
+
+      color: #c0392b;
+
+      font-weight: bold;
+
+      margin-top: 5px;
+
+    }
+
+
+
+    .controls button {
+
+      background-color: #60041A;
+
+      color: #F4F0EA;
+
+      border: none;
+
+      border-radius: 5px;
+
+      padding: 6px 10px;
+
+      cursor: pointer;
+
+    }
+
+    .controls button:hover {
+
+      background-color: #A34743;
+
+    }
+
+
+
+    .input-error { border-color: #c0392b !important; }
+
+    .input-success { border-color: #2ecc71 !important; }
+
+  </style>
+
 </head>
+
 <body>
-  <div class="container">
-    <h1>📝 Lista de Tarefas (API)</h1>
-    <p>Tarefas persistidas usando JSONPlaceholder (simulação).</p>
 
-    <div id="mensagem" aria-live="polite"></div>
+  <div class="container">
 
-    <div class="add-section">
-      <input type="text" id="inputTarefa" placeholder="Nova tarefa (min. 5 caracteres)" />
-      <button id="btnAdicionar">Adicionar</button>
-    </div>
+    <h1>Lista de Tarefas</h1>
 
-    <ul id="listaTarefas">
-          </ul>
-  </div>
+    <p>Adicione suas tarefas!</p>
 
-  <script>
-    const API_URL = 'https://jsonplaceholder.typicode.com/todos';
-    const MIN_CHARS = 5;
 
-    const inputTarefa = document.getElementById('inputTarefa');
-    const btnAdicionar = document.getElementById('btnAdicionar');
-    const mensagem = document.getElementById('mensagem');
-    const listaTarefas = document.getElementById('listaTarefas');
 
-    // --- Funções de Utilitário ---
+    <div>
 
-    function mostrarMensagem(texto, tipo = 'loading') {
-      mensagem.textContent = texto;
-      mensagem.className = tipo;
-    }
+      <input type="text" id="inputTarefa" placeholder="Digite a sua tarefa (mín. 5 caracteres)" />
 
-    // --- Funções de Integração com API ---
+      <input type="file" id="inputImagem" accept="image/png, image/jpeg" />
 
-    async function carregarTarefas() {
-      mostrarMensagem('Carregando tarefas...');
-      try {
-        // Limita a 10 tarefas para melhor visualização no teste
-        const response = await fetch(`${API_URL}?_limit=10`);
-        if (!response.ok) throw new Error('Falha ao carregar a lista.');
-        const itens = await response.json();
-        renderLista(itens);
-        mostrarMensagem('Tarefas carregadas.', 'success');
-      } catch (error) {
-        console.error('Erro ao carregar:', error);
-        mostrarMensagem(`Erro: ${error.message}`, 'error');
-      } finally {
-        // Limpa a mensagem de sucesso/loading após um tempo
-        setTimeout(() => mensagem.className = '', 3000);
-      }
-    }
+      <button id="btnAdicionar">Adicionar</button>
 
-    async function adicionarTarefa() {
-      const texto = inputTarefa.value.trim();
-      if (texto.length < MIN_CHARS) {
-        mostrarMensagem(`Erro: digite ao menos ${MIN_CHARS} caracteres.`, 'error');
-        setTimeout(() => mensagem.className = '', 3000);
-        return;
-      }
+    </div>
 
-      mostrarMensagem('Adicionando tarefa...');
-      const novaTarefa = {
-        title: texto,
-        completed: false,
-        userId: 1 // Id de usuário fixo para o exemplo
-      };
 
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(novaTarefa)
-        });
-        if (!response.ok) throw new Error('Falha ao adicionar no servidor.');
 
-        const itemCriado = await response.json();
-        // A API JSONPlaceholder retorna um ID "fictício" (geralmente 201) para POSTs, simulando sucesso.
-        renderItem(itemCriado, true); // Adiciona o item ao topo
-        inputTarefa.value = '';
-        mostrarMensagem('Tarefa adicionada com sucesso!', 'success');
+    <p id="mensagem" aria-live="polite"></p>
 
-      } catch (error) {
-        console.error('Erro ao adicionar:', error);
-        mostrarMensagem(`Erro: ${error.message}`, 'error');
-      } finally {
-        setTimeout(() => mensagem.className = '', 3000);
-      }
-    }
 
-    async function toggleCompleted(id, isCompleted) {
-      mostrarMensagem('Atualizando status...');
-      try {
-        const response = await fetch(`${API_URL}/${id}`, {
-          method: 'PATCH', // Usamos PATCH para atualizar uma parte do recurso
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ completed: isCompleted })
-        });
-        if (!response.ok) throw new Error('Falha ao atualizar o status.');
 
-        const li = document.querySelector(`li[data-id="${id}"]`);
-        if (li) {
-          li.classList.toggle('completed', isCompleted);
-        }
-        mostrarMensagem('Status atualizado.', 'success');
+    <ul id="listaTarefas"></ul>
 
-      } catch (error) {
-        console.error('Erro ao atualizar status:', error);
-        mostrarMensagem('Erro ao atualizar status da tarefa.', 'error');
-      } finally {
-        setTimeout(() => mensagem.className = '', 3000);
-      }
-    }
+  </div>
 
-    async function editarTarefa(id, novoTitulo) {
-      mostrarMensagem('Salvando edição...');
-      try {
-        const response = await fetch(`${API_URL}/${id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title: novoTitulo })
-        });
-        if (!response.ok) throw new Error('Falha ao salvar edição.');
 
-        mostrarMensagem('Edição salva.', 'success');
-      } catch (error) {
-        console.error('Erro ao editar:', error);
-        mostrarMensagem('Erro ao salvar a edição.', 'error');
-      } finally {
-        setTimeout(() => mensagem.className = '', 3000);
-      }
-    }
 
-    async function excluirTarefa(id) {
-      if (!confirm('Tem certeza que deseja excluir esta tarefa?')) return;
+  <script>
 
-      mostrarMensagem('Excluindo tarefa...');
-      try {
-        const response = await fetch(`${API_URL}/${id}`, {
-          method: 'DELETE'
-        });
-        // JSONPlaceholder sempre retorna 200/204 para DELETE, simulando sucesso
-        if (!response.ok) throw new Error('Falha ao excluir no servidor.');
+    const input = document.getElementById('inputTarefa');
 
-        document.querySelector(`li[data-id="${id}"]`).remove();
-        mostrarMensagem('Tarefa excluída.', 'success');
-      } catch (error) {
-        console.error('Erro ao excluir:', error);
-        mostrarMensagem('Erro ao excluir a tarefa.', 'error');
-      } finally {
-        setTimeout(() => mensagem.className = '', 3000);
-      }
-    }
+    const fileInput = document.getElementById('inputImagem');
 
-    // --- Funções de Renderização e UI ---
+    const btnAdicionar = document.getElementById('btnAdicionar');
 
-    function renderItem(item, prepend = false) {
-      const li = document.createElement('li');
-      li.dataset.id = item.id;
-      li.classList.toggle('completed', item.completed);
+    const mensagem = document.getElementById('mensagem');
 
-      // Checkbox
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.checked = item.completed;
-      checkbox.onchange = (e) => toggleCompleted(item.id, e.target.checked);
-      li.append(checkbox);
+    const lista = document.getElementById('listaTarefas');
 
-      // Texto da Tarefa
-      const textoWrapper = document.createElement('span');
-      textoWrapper.className = 'task-text';
-      textoWrapper.textContent = item.title;
-      li.append(textoWrapper);
+    const MIN_CHARS = 5;
 
-      // Controles (Botões)
-      const controls = document.createElement('div');
-      controls.className = 'controls';
-      li.append(controls);
+    let itens = [];
 
-      const btnEditar = document.createElement('button');
-      btnEditar.textContent = 'Editar';
-      btnEditar.className = 'edit-btn';
-      btnEditar.onclick = () => toggleEditar(item.id, textoWrapper, btnEditar);
 
-      const btnExcluir = document.createElement('button');
-      btnExcluir.textContent = 'Excluir';
-      btnExcluir.onclick = () => excluirTarefa(item.id);
 
-      controls.append(btnEditar, btnExcluir);
+    function mostrarMensagem(texto, tipo) {
 
-      if (prepend) {
-        listaTarefas.prepend(li); // Adiciona no início da lista
-      } else {
-        listaTarefas.append(li);
-      }
-    }
+      mensagem.textContent = texto;
 
-    function renderLista(itens) {
-      listaTarefas.innerHTML = '';
-      itens.forEach(item => renderItem(item));
-    }
+      mensagem.className = tipo;
 
-    function toggleEditar(id, textoEl, btnEditar) {
-      // Verifica se está no modo de edição (botão diz 'Salvar')
-      if (btnEditar.dataset.editing === 'true') {
-        const inputEd = textoEl.querySelector('input');
-        const novoTitulo = inputEd.value.trim();
+      input.classList.remove('input-error','input-success');
 
-        if (novoTitulo.length < MIN_CHARS) {
-          mostrarMensagem(`Erro: digite ao menos ${MIN_CHARS} caracteres.`, 'error');
-          setTimeout(() => mensagem.className = '', 3000);
-          return;
-        }
+      if (tipo === 'success') input.classList.add('input-success');
 
-        // Salva na API e reverte a UI
-        editarTarefa(id, novoTitulo).then(() => {
-          btnEditar.textContent = 'Editar';
-          btnEditar.className = 'edit-btn';
-          btnEditar.dataset.editing = 'false';
-          textoEl.textContent = novoTitulo; // Atualiza o texto na UI
-        });
+      else if (tipo === 'error') input.classList.add('input-error');
 
-      } else {
-        // Entra no modo de edição (botão diz 'Editar')
-        btnEditar.dataset.editing = 'true';
-        btnEditar.textContent = 'Salvar';
-        btnEditar.className = 'save-btn';
+      setTimeout(() => {
 
-        const tituloAtual = textoEl.textContent;
-        const inputEd = document.createElement('input');
-        inputEd.type = 'text';
-        inputEd.value = tituloAtual;
-        inputEd.onkeypress = (e) => {
-          if (e.key === 'Enter') toggleEditar(id, textoEl, btnEditar);
-        };
+        mensagem.textContent = '';
 
-        textoEl.innerHTML = '';
-        textoEl.append(inputEd);
-        inputEd.focus();
-      }
-    }
+        mensagem.className = '';
 
-    // --- Inicialização ---
+        input.classList.remove('input-error','input-success');
 
-    btnAdicionar.addEventListener('click', adicionarTarefa);
-    inputTarefa.addEventListener('keypress', e => { if (e.key === 'Enter') adicionarTarefa(); });
+      }, 2500);
 
-    carregarTarefas();
-  </script>
+    }
+
+
+
+    function gerarId() {
+
+      return Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+
+    }
+
+
+
+    btnAdicionar.addEventListener('click', adicionarTarefa);
+
+    input.addEventListener('keypress', e => { if (e.key === 'Enter') adicionarTarefa(); });
+
+
+
+    function adicionarTarefa() {
+
+      const texto = input.value.trim();
+
+      if (texto.length < MIN_CHARS) {
+
+        mostrarMensagem(`Erro: digite ao menos ${MIN_CHARS} caracteres.`, 'error');
+
+        return;
+
+      }
+
+
+
+      const file = fileInput.files && fileInput.files[0];
+
+      if (file) {
+
+        const reader = new FileReader();
+
+        reader.onload = () => pushItem(texto, reader.result);
+
+        reader.readAsDataURL(file);
+
+      } else pushItem(texto, null);
+
+    }
+
+
+
+    function pushItem(texto, img) {
+
+      itens.push({id: gerarId(), texto, img});
+
+      renderLista();
+
+      input.value = '';
+
+      fileInput.value = '';
+
+      mostrarMensagem('Tarefa adicionada com sucesso!', 'success');
+
+    }
+
+
+
+    function renderLista() {
+
+      lista.innerHTML = '';
+
+      itens.forEach((item, idx) => {
+
+        const li = document.createElement('li');
+
+        li.draggable = true;
+
+        li.dataset.id = item.id;
+
+
+
+        const thumb = document.createElement('img');
+
+        thumb.className = 'thumb';
+
+        thumb.src = item.img || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%23eee"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="8" fill="%23888">PNG</text></svg>';
+
+
+
+        const textoEl = document.createElement('span');
+
+        textoEl.textContent = item.texto;
+
+
+
+        const controls = document.createElement('div');
+
+        controls.className = 'controls';
+
+
+
+        const btnEditar = document.createElement('button');
+
+        btnEditar.textContent = 'Editar';
+
+        btnEditar.onclick = () => toggleEditar(item.id, textoEl, btnEditar);
+
+
+
+        const btnExcluir = document.createElement('button');
+
+        btnExcluir.textContent = 'Excluir';
+
+        btnExcluir.onclick = () => {
+
+          if (confirm('Excluir esta tarefa?')) {
+
+            itens = itens.filter(i => i.id !== item.id);
+
+            renderLista();
+
+            mostrarMensagem('Item excluído.', 'success');
+
+          }
+
+        };
+
+
+
+        const btnUp = document.createElement('button');
+
+        btnUp.textContent = '↑';
+
+        btnUp.onclick = () => { if (idx > 0) { [itens[idx-1], itens[idx]] = [itens[idx], itens[idx-1]]; renderLista(); } };
+
+
+
+        const btnDown = document.createElement('button');
+
+        btnDown.textContent = '↓';
+
+        btnDown.onclick = () => { if (idx < itens.length - 1) { [itens[idx+1], itens[idx]] = [itens[idx], itens[idx+1]]; renderLista(); } };
+
+
+
+        const btnImg = document.createElement('button');
+
+        btnImg.textContent = 'Alterar Imagem';
+
+        btnImg.onclick = () => {
+
+          const inputAlt = document.createElement('input');
+
+          inputAlt.type = 'file';
+
+          inputAlt.accept = 'image/png,image/jpeg';
+
+          inputAlt.onchange = () => {
+
+            const f = inputAlt.files[0];
+
+            if (f) {
+
+              const r = new FileReader();
+
+              r.onload = () => {
+
+                item.img = r.result;
+
+                renderLista();
+
+                mostrarMensagem('Imagem atualizada.', 'success');
+
+              };
+
+              r.readAsDataURL(f);
+
+            }
+
+          };
+
+          inputAlt.click();
+
+        };
+
+
+
+        controls.append(btnEditar, btnExcluir, btnUp, btnDown, btnImg);
+
+        li.append(thumb, textoEl, controls);
+
+        lista.append(li);
+
+      });
+
+    }
+
+
+
+    function toggleEditar(id, textoEl, btnEditar) {
+
+      const item = itens.find(i => i.id === id);
+
+      if (!item) return;
+
+
+
+      if (btnEditar.dataset.editing === 'true') {
+
+        const novoTexto = textoEl.querySelector('input').value.trim();
+
+        if (novoTexto.length < MIN_CHARS) {
+
+          mostrarMensagem(`Erro: digite ao menos ${MIN_CHARS} caracteres.`, 'error');
+
+          return;
+
+        }
+
+        item.texto = novoTexto;
+
+        btnEditar.textContent = 'Editar';
+
+        btnEditar.dataset.editing = 'false';
+
+        renderLista();
+
+        mostrarMensagem('Alteração salva.', 'success');
+
+      } else {
+
+        btnEditar.dataset.editing = 'true';
+
+        btnEditar.textContent = 'Salvar';
+
+        const inputEd = document.createElement('input');
+
+        inputEd.type = 'text';
+
+        inputEd.value = item.texto;
+
+        textoEl.innerHTML = '';
+
+        textoEl.append(inputEd);
+
+        inputEd.focus();
+
+      }
+
+    }
+
+  </script>
+
 </body>
+
 </html>
